@@ -16,7 +16,7 @@ def changeWallpaper(imagePath):
 
     createDirectoryCommand = f'mkdir -p {kcolorschemes}'
     subprocess.Popen(createDirectoryCommand.split(),
-                    stdout=subprocess.PIPE)
+                     stdout=subprocess.PIPE)
 
     colorName = 'WSG-Current'
 
@@ -27,7 +27,7 @@ def changeWallpaper(imagePath):
     colorScheme = setColorScheme(colorTuple)
 
     subprocess.Popen(f'cp {colorScheme} {newColorScheme}'.split(),
-                    stdout=subprocess.PIPE).wait()
+                     stdout=subprocess.PIPE).wait()
     subprocess.Popen(
         f'cp {colorScheme} {newColorSchemeAlt}'.split(), stdout=subprocess.PIPE).wait()
     subprocess.Popen(
@@ -147,9 +147,9 @@ def changeWallpaper(imagePath):
     newColorSchemeFilePlain.close()
 
     subprocess.Popen(f'plasma-apply-colorscheme BreezeDark'.split(),
-                    stdout=subprocess.PIPE).wait()
+                     stdout=subprocess.PIPE).wait()
     subprocess.Popen(f'plasma-apply-colorscheme {colorName}'.split(),
-                    stdout=subprocess.PIPE).wait()
+                     stdout=subprocess.PIPE).wait()
 
 
 wallpaperConfigFile = os.path.expanduser(

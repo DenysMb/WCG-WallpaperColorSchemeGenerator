@@ -47,7 +47,7 @@ def getWallpaper():
         if "[Wallpaper]" in line:
             isInWallpaper = True
         if "Image" in line and isInWallpaper:
-            imagePath = line[6:].rstrip()
+            imagePath = line[6:].rstrip().replace('file:/', '')
             break
 
     configFile.close()
