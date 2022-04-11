@@ -3,6 +3,7 @@ import subprocess
 import os
 from PIL import Image
 from colorthief import ColorThief
+import time
 
 darkColorScheme = "/usr/share/color-schemes/BreezeDark.colors"
 lightColorScheme = "/usr/share/color-schemes/BreezeLight.colors"
@@ -37,6 +38,8 @@ def setColorScheme(color):
 
 def getWallpaper():
     configFile = open(config, "r")
+
+    time.sleep(0.5)
 
     isInWallpaper = False
     imagePath = ''
