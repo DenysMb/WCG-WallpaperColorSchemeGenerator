@@ -1,12 +1,12 @@
 import colorsys
-import subprocess
 import os
 from PIL import Image
 from colorthief import ColorThief
 import time
 
-darkColorScheme =  os.path.expanduser("./TemplateDark.colors")
-lightColorScheme =  os.path.expanduser("./TemplateLight.colors")
+dir = os.path.dirname(__file__)
+darkColorScheme = f"{dir}/TemplateDark.colors"
+lightColorScheme = f"{dir}/TemplateLight.colors"
 kwinrules = os.path.expanduser("~/.config/kwinrulesrc")
 kcolorschemes = os.path.expanduser("~/.local/share/color-schemes")
 config = os.path.expanduser(
