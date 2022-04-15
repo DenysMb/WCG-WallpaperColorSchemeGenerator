@@ -18,6 +18,10 @@ Be sure that you have **Python 3** installed!
 ## Background service
 If you want to execute it in terminal as a background service, you should follow the steps above but with the `wcg-background` script instead.
 
+## Check too
+You can check too my others two scripts:
+- [CSG - Color Scheme Generator](https://github.com/DenysMb/CSG-ColorSchemeGenerator): With this script you can easily generate any color-scheme by using a color picker!
+- [TKP - Tile Color Picker](https://github.com/DenysMb/TKP-TileColorPicker): With this script you can set the header/tile color of a window to match with their main window color. This is a Python version of the [TKP script](https://github.com/siggsy/Tkp) from [@siggsy](https://github.com/siggsy)
 
 ## Example
 
@@ -53,8 +57,3 @@ Mode that everything is of the same color (except from the accent colors)
 
 ![WSG-Plain](https://user-images.githubusercontent.com/33737137/163511417-57baa4aa-4069-4cb1-aeea-6ee5a9f1a15d.gif)
 ![LightWSG-Plain](https://user-images.githubusercontent.com/33737137/163511890-7cc4c46e-e7fe-401c-95c8-1b5fc1fa371d.gif)
-
-## Check too
-You can check too my others two scripts:
-- [CSG - Color Scheme Generator](https://github.com/DenysMb/CSG-ColorSchemeGenerator): With this script you can easily generate any color-scheme by using a color picker!
-- [TKP - Tile Color Picker](https://github.com/DenysMb/TKP-TileColorPicker): With this script you can set the header/tile color of a window to match with their main window color. This is a Python version of the [TKP script](https://github.com/siggsy/Tkp) from [@siggsy](https://github.com/siggsy)
