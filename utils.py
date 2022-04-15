@@ -26,13 +26,9 @@ def lighten(color, amount=0.5):
 
     colorTuple = colorsys.hls_to_rgb(newR, newG, newB)
 
-    print(f'Old: {colorTuple}')
-
     colorList = list(colorTuple)
     colorList[:] = [x if x <= 255 else 255 for x in colorList]
     colorTuple = tuple(colorList)
-
-    print(f'New: {colorTuple}')
 
     return f'{",".join(map(str, tuple(map(int, colorTuple))))}'
 
