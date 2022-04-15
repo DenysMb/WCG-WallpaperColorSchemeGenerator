@@ -5,8 +5,8 @@ from PIL import Image
 from colorthief import ColorThief
 import time
 
-darkColorScheme = "/usr/share/color-schemes/BreezeDark.colors"
-lightColorScheme = "/usr/share/color-schemes/BreezeLight.colors"
+darkColorScheme =  os.path.expanduser("./TemplateDark.colors")
+lightColorScheme =  os.path.expanduser("./TemplateLight.colors")
 kwinrules = os.path.expanduser("~/.config/kwinrulesrc")
 kcolorschemes = os.path.expanduser("~/.local/share/color-schemes")
 config = os.path.expanduser(
@@ -19,10 +19,22 @@ def lighten(color, amount=0.5):
     b = color[2]
 
     hslColor = colorsys.rgb_to_hls(r, g, b)
-    newColor = colorsys.hls_to_rgb(
-        hslColor[0], 1 - amount * (1 - hslColor[1]), hslColor[2])
 
-    return f'{",".join(map(str, tuple(map(int, newColor))))}'
+    newR = hslColor[0] if hslColor[0] <= 255 else 255
+    newG = 1 - amount * (1 - hslColor[1])
+    newB = hslColor[2]
+
+    colorTuple = colorsys.hls_to_rgb(newR, newG, newB)
+
+    print(f'Old: {colorTuple}')
+
+    colorList = list(colorTuple)
+    colorList[:] = [x if x <= 255 else 255 for x in colorList]
+    colorTuple = tuple(colorList)
+
+    print(f'New: {colorTuple}')
+
+    return f'{",".join(map(str, tuple(map(int, colorTuple))))}'
 
 
 def setColorScheme(color):
@@ -31,9 +43,9 @@ def setColorScheme(color):
     b = color[2]
 
     if (r*0.299 + g*0.587 + b*0.114) > 186:
-        return lightColorScheme
+        return (lightColorScheme, "light")
     else:
-        return darkColorScheme
+        return (darkColorScheme, "dark")
 
 
 def getWallpaper():
