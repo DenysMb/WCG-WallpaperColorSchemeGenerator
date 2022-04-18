@@ -1,6 +1,6 @@
 [Appearance]
-ColorScheme=WCG
+ColorScheme={NAME}
 
 [General]
-Name=WCG
+Name={NAME}
 Parent=FALLBACK/

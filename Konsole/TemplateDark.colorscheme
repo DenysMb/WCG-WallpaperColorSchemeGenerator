@@ -91,6 +91,6 @@ Color=255,255,255
 [General]
 Blur=true
 ColorRandomization=false
-Description=WCG
+Description={NAME}
 Opacity=0.8
 Wallpaper=

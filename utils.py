@@ -1,3 +1,4 @@
+import subprocess
 import colorsys
 import os
 from PIL import Image
@@ -89,3 +90,89 @@ def getPalette(imagePath):
     palette = colorThief.get_palette(color_count=2)
 
     return palette
+
+
+def generateKonsoleColors(mode, palette):
+    colorName = 'WCG'
+    colorNameAlt = 'WCG-Alt'
+    colorScheme, colorProfile = setKonsoleColorScheme(mode)
+
+    background1 = lighten(palette[0], 1)
+    background2 = lighten(palette[0], 1.1)
+    background3 = lighten(palette[0], 0.9)
+    accent1 = lighten(palette[1], 1)
+    accent2 = lighten(palette[1], 1.1)
+    accent3 = lighten(palette[1], 0.9)
+
+    # COLORS PALETTE
+    colors = (background1, background2, background3)
+    colorsAlt = (accent1, accent2, accent3)
+
+    # CREATE DIR
+    createDirectoryCommand = f'mkdir -p {konsoleDir}'
+    subprocess.Popen(createDirectoryCommand.split(),
+                     stdout=subprocess.PIPE)
+
+    # CREATE NORMAL SCHEME
+    newColorScheme = f'{konsoleDir}/{colorName}.colorscheme'
+    newColorProfile = f'{konsoleDir}/{colorName}.profile'
+
+    subprocess.Popen(f'cp {colorScheme} {newColorScheme}'.split(),
+                     stdout=subprocess.PIPE).wait()
+    subprocess.Popen(f'cp {colorProfile} {newColorProfile}'.split(),
+                     stdout=subprocess.PIPE).wait()
+
+    # CREATE ALTERNATIVE SCHEME
+    newColorSchemeAlt = f'{konsoleDir}/{colorName}-Alt.colorscheme'
+    newColorProfileAlt = f'{konsoleDir}/{colorName}-Alt.profile'
+
+    subprocess.Popen(f'cp {colorScheme} {newColorSchemeAlt}'.split(),
+                     stdout=subprocess.PIPE).wait()
+    subprocess.Popen(f'cp {colorProfile} {newColorProfileAlt}'.split(),
+                     stdout=subprocess.PIPE).wait()
+
+    # CREATE NORMAL STYLE FILES
+    createKonsoleColorschemeFile(
+        newColorScheme, colorName, colors)
+    createKonsoleProfileFile(newColorProfile, colorName)
+
+    # CREATE ALTERNATIVE STYLE FILES
+    createKonsoleColorschemeFile(
+        newColorSchemeAlt, colorName, colorsAlt)
+    createKonsoleProfileFile(newColorProfileAlt, colorNameAlt)
+
+
+def createKonsoleColorschemeFile(newColorScheme, colorName, colors):
+    colorSchemeFile = open(newColorScheme, "r")
+    colorSchemeLines = colorSchemeFile.readlines()
+    colorSchemeFile.close()
+
+    newColorSchemeFile = open(newColorScheme, "w")
+
+    for line in colorSchemeLines:
+        if "{BACKGROUND_1}" in line:
+            line = line.replace("{BACKGROUND_1}", colors[0])
+        if "{BACKGROUND_2}" in line:
+            line = line.replace("{BACKGROUND_2}", colors[1])
+        if "{BACKGROUND_4}" in line:
+            line = line.replace("{BACKGROUND_4}", colors[2])
+        if "{NAME}" in line:
+            line = line.replace("{NAME}", colorName)
+        newColorSchemeFile.write(line)
+
+    newColorSchemeFile.close()
+
+
+def createKonsoleProfileFile(newColorProfile, colorName):
+    colorProfileFile = open(newColorProfile, "r")
+    colorProfileLines = colorProfileFile.readlines()
+    colorProfileFile.close()
+
+    newColorProfileFile = open(newColorProfile, "w")
+
+    for line in colorProfileLines:
+        if "{NAME}" in line:
+            line = line.replace("{NAME}", colorName)
+        newColorProfileFile.write(line)
+
+    newColorProfileFile.close()
