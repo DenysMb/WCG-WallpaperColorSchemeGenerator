@@ -1,7 +1,6 @@
 import subprocess
 import os
-from utils import getPalette, getWallpaper
-from utils import lighten, setColorScheme, kcolorschemes
+from utils import getPalette, getWallpaper, setKonsoleColorScheme, lighten, setColorScheme, kcolorschemes, konsoleDir
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
 
@@ -27,7 +26,7 @@ def changeWallpaper(imagePath):
     subprocess.Popen(createDirectoryCommand.split(),
                      stdout=subprocess.PIPE)
 
-    colorName = 'WSG'
+    colorName = 'WCG'
 
     newColorScheme = f'{kcolorschemes}/{colorName}.colors'
     newColorSchemeNoHeader = f'{kcolorschemes}/{colorName}-NoHeader.colors'
@@ -108,9 +107,11 @@ def changeWallpaper(imagePath):
         if "{ACCENT_3}" in line:
             line = line.replace("{ACCENT_3}", accent3)
         if "{HEADER_1}" in line:
-            line = line.replace("{HEADER_1}", header2 if mode == "dark" else header1)
+            line = line.replace(
+                "{HEADER_1}", header2 if mode == "dark" else header1)
         if "{HEADER_2}" in line:
-            line = line.replace("{HEADER_2}", header2 if mode == "dark" else header1)
+            line = line.replace(
+                "{HEADER_2}", header2 if mode == "dark" else header1)
         if "{NAME}" in line:
             line = line.replace("{NAME}", f'{colorName}-NoHeader')
         newColorSchemeFileNoHeader.write(line)
@@ -126,17 +127,23 @@ def changeWallpaper(imagePath):
 
     for line in colorSchemePlainLines:
         if "{BACKGROUND_1}" in line:
-            line = line.replace("{BACKGROUND_1}", background1 if mode == "dark" else background2)
+            line = line.replace(
+                "{BACKGROUND_1}", background1 if mode == "dark" else background2)
         if "{BACKGROUND_2}" in line:
-            line = line.replace("{BACKGROUND_2}", background1 if mode == "dark" else background2)
+            line = line.replace(
+                "{BACKGROUND_2}", background1 if mode == "dark" else background2)
         if "{BACKGROUND_3}" in line:
-            line = line.replace("{BACKGROUND_3}", background1 if mode == "dark" else background2)
+            line = line.replace(
+                "{BACKGROUND_3}", background1 if mode == "dark" else background2)
         if "{BACKGROUND_4}" in line:
-            line = line.replace("{BACKGROUND_4}", background1 if mode == "dark" else background2)
+            line = line.replace(
+                "{BACKGROUND_4}", background1 if mode == "dark" else background2)
         if "{BACKGROUND_5}" in line:
-            line = line.replace("{BACKGROUND_5}", background1 if mode == "dark" else background2)
+            line = line.replace(
+                "{BACKGROUND_5}", background1 if mode == "dark" else background2)
         if "{BACKGROUND_6}" in line:
-            line = line.replace("{BACKGROUND_6}", background1 if mode == "dark" else background2)
+            line = line.replace(
+                "{BACKGROUND_6}", background1 if mode == "dark" else background2)
         if "{ACCENT_1}" in line:
             line = line.replace("{ACCENT_1}", accent1)
         if "{ACCENT_2}" in line:
@@ -144,9 +151,11 @@ def changeWallpaper(imagePath):
         if "{ACCENT_3}" in line:
             line = line.replace("{ACCENT_3}", accent3)
         if "{HEADER_1}" in line:
-            line = line.replace("{HEADER_1}", background1 if mode == "dark" else background2)
+            line = line.replace(
+                "{HEADER_1}", background1 if mode == "dark" else background2)
         if "{HEADER_2}" in line:
-            line = line.replace("{HEADER_2}", background1 if mode == "dark" else background2)
+            line = line.replace(
+                "{HEADER_2}", background1 if mode == "dark" else background2)
         if "{NAME}" in line:
             line = line.replace("{NAME}", f'{colorName}-Plain')
         newColorSchemeFilePlain.write(line)
@@ -180,9 +189,11 @@ def changeWallpaper(imagePath):
         if "{ACCENT_3}" in line:
             line = line.replace("{ACCENT_3}", accent3)
         if "{HEADER_1}" in line:
-            line = line.replace("{HEADER_1}", header3 if mode == "dark" else header2)
+            line = line.replace(
+                "{HEADER_1}", header3 if mode == "dark" else header2)
         if "{HEADER_2}" in line:
-            line = line.replace("{HEADER_2}", header3 if mode == "dark" else header2)
+            line = line.replace(
+                "{HEADER_2}", header3 if mode == "dark" else header2)
         if "{NAME}" in line:
             line = line.replace("{NAME}", f'{colorName}-DarkHeader')
         newColorSchemeFileDarkHeader.write(line)
@@ -193,6 +204,46 @@ def changeWallpaper(imagePath):
                      stdout=subprocess.PIPE).wait()
     subprocess.Popen(f'plasma-apply-colorscheme {colorName}'.split(),
                      stdout=subprocess.PIPE).wait()
+
+    # GENERATE KONSOLE COLORS AND PROFILE
+    generateKonsoleColors(mode, palette)
+
+
+def generateKonsoleColors(mode, palette):
+    colorName = 'WCG'
+    colorScheme, colorProfile = setKonsoleColorScheme(mode)
+    background1 = lighten(palette[0], 1)
+    background2 = lighten(palette[0], 1.1)
+    background4 = lighten(palette[0], 0.9)
+
+    createDirectoryCommand = f'mkdir -p {konsoleDir}'
+    subprocess.Popen(createDirectoryCommand.split(),
+                     stdout=subprocess.PIPE)
+
+    newColorScheme = f'{konsoleDir}/{colorName}.colorscheme'
+    newColorProfile = f'{konsoleDir}/{colorName}.profile'
+
+    subprocess.Popen(f'cp {colorScheme} {newColorScheme}'.split(),
+                     stdout=subprocess.PIPE).wait()
+    subprocess.Popen(f'cp {colorProfile} {newColorProfile}'.split(),
+                     stdout=subprocess.PIPE).wait()
+
+    colorSchemeFile = open(newColorScheme, "r")
+    colorSchemeLines = colorSchemeFile.readlines()
+    colorSchemeFile.close()
+
+    newColorSchemeFile = open(newColorScheme, "w")
+
+    for line in colorSchemeLines:
+        if "{BACKGROUND_1}" in line:
+            line = line.replace("{BACKGROUND_1}", background1)
+        if "{BACKGROUND_2}" in line:
+            line = line.replace("{BACKGROUND_2}", background2)
+        if "{BACKGROUND_4}" in line:
+            line = line.replace("{BACKGROUND_4}", background4)
+        newColorSchemeFile.write(line)
+
+    newColorSchemeFile.close()
 
 
 wallpaperConfigFile = os.path.expanduser(

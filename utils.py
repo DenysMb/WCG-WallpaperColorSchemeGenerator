@@ -5,10 +5,14 @@ from colorthief import ColorThief
 import time
 
 dir = os.path.dirname(__file__)
-darkColorScheme = f"{dir}/TemplateDark.colors"
-lightColorScheme = f"{dir}/TemplateLight.colors"
+darkColorScheme = f"{dir}/Color-scheme/TemplateDark.colors"
+lightColorScheme = f"{dir}/Color-scheme/TemplateLight.colors"
+darkKonsoleColorScheme = f"{dir}/Konsole/TemplateDark.colorscheme"
+lightKonsoleColorScheme = f"{dir}/Konsole/TemplateLight.colorscheme"
+konsoleTemplate = f"{dir}/Konsole/Template.profile"
 kwinrules = os.path.expanduser("~/.config/kwinrulesrc")
 kcolorschemes = os.path.expanduser("~/.local/share/color-schemes")
+konsoleDir = os.path.expanduser("~/.local/share/konsole")
 config = os.path.expanduser(
     "~/.config/plasma-org.kde.plasma.desktop-appletsrc")
 
@@ -42,6 +46,13 @@ def setColorScheme(color):
         return (lightColorScheme, "light")
     else:
         return (darkColorScheme, "dark")
+
+
+def setKonsoleColorScheme(mode):
+    if (mode == "light"):
+        return (lightKonsoleColorScheme, konsoleTemplate)
+    else:
+        return (darkKonsoleColorScheme, konsoleTemplate)
 
 
 def getWallpaper():
