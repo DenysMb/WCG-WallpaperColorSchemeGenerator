@@ -57,6 +57,12 @@ def setKonsoleColorScheme(mode):
         return (darkKonsoleColorScheme, konsoleTemplate)
 
 
+def getResolution():
+    output = subprocess.Popen('xrandr | grep "\*" | cut -d" " -f4',shell=True, stdout=subprocess.PIPE).communicate()[0]
+    resolution = output.split()[0]
+    return resolution.decode("utf-8")
+
+
 def getWallpaper():
     configFile = open(config, "r")
 
@@ -76,21 +82,30 @@ def getWallpaper():
 
     configFile.close()
 
+    if imagePath[-1] == '/':
+        image = getResolution()
+        imagePath = (f'{imagePath}contents/images/{image}.jpg')
+
     return imagePath
 
 
 def getPalette(imagePath):
-    imageFile = Image.open(imagePath).resize((150, 150))
-    imageExtension = imagePath.split('.')[-1]
+    try:
+        imageFile = Image.open(imagePath).resize((150, 150))
+        imageExtension = imagePath.split('.')[-1]
 
-    resizedImageName = f'/tmp/resized.{imageExtension}'
-    imageFile.save(resizedImageName)
-    resizedImagePath = os.path.expanduser(resizedImageName)
+        resizedImageName = f'/tmp/resized.{imageExtension}'
+        imageFile.save(resizedImageName)
+        resizedImagePath = os.path.expanduser(resizedImageName)
 
-    colorThief = ColorThief(resizedImagePath)
-    palette = colorThief.get_palette(color_count=2)
+        colorThief = ColorThief(resizedImagePath)
+        palette = colorThief.get_palette(color_count=2)
 
-    return palette
+        return palette
+    except:
+        if imagePath[-1] == '/':
+            image = getResolution()
+            getPalette(f'{imagePath}contents/images/{image}.jpg')
 
 
 def generateKonsoleColors(mode, palette):

@@ -224,7 +224,11 @@ try:
 
         if (newWallpaper != oldWallpaper):
             oldWallpaper = newWallpaper
-            changeWallpaper(newWallpaper)
+
+            try:
+                changeWallpaper(newWallpaper)
+            except:
+                changeWallpaper(oldWallpaper)
 except KeyboardInterrupt:
     observer.stop()
 observer.join()
