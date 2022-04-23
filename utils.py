@@ -42,8 +42,9 @@ def setColorScheme(color):
     r = color[0]
     g = color[1]
     b = color[2]
+    isLight = (r*0.299 + g*0.587 + b*0.114) > 127.5
 
-    if (r*0.299 + g*0.587 + b*0.114) > 186:
+    if isLight:
         return (lightColorScheme, "light")
     else:
         return (darkColorScheme, "dark")
